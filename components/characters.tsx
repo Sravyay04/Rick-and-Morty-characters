@@ -46,6 +46,7 @@ const Characters = ({ selectedEpisode, allData }: any) => {
 
   return (
     <div>
+      {charactersData.length > 0 && selectedEpisode && <h3>{charactersData.length} characters in episode "{selectedEpisode}"</h3>}
       {charactersData.map((character: any, index: number) => (
         <img
           src={selectedEpisode ? character : character.image}
