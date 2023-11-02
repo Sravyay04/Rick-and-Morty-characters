@@ -28,7 +28,7 @@ const IndexPage: React.FC = () => {
       />
       </div>
       <div className="col-md-10">
-      <Characters selectedEpisode={selectedEpisode} allData={allData} />
+      <Characters selectedEpisode={selectedEpisode} selectedEpisodeChars={allData.find(el => el.name === selectedEpisode)?.characters}  allData={allData} />
       </div>
     </div>
     </>

@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from "react";
 
-const Characters = ({ selectedEpisode, allData }: any) => {
+const getResultIdsString = (urls) => {
+  console.log({ urls })
+  return urls?.map(url => url.split('/').pop()).join(',');
+}
+
+const Characters = ({ selectedEpisode, selectedEpisodeChars, allData }: any) => {
+
+  console.log({ selectedEpisodeChars })
   const [charactersData, setCharactersData] = useState<any>([]);
 
   async function fetchData(url: string) {
@@ -15,29 +22,11 @@ const Characters = ({ selectedEpisode, allData }: any) => {
   }
 
   async function fetchAllData(): Promise<void> {
-    const selectedEpisodeCharacters = allData.filter(
-      (data: any) => data.name == selectedEpisode
-    );
-    const resultCharacters = selectedEpisodeCharacters.map(
-      (data: any) => data.characters
-    );
+    const ids = getResultIdsString(selectedEpisodeChars)
 
-    const urls: string[] = selectedEpisode
-      ? [...resultCharacters[0]]
-      : ["https://rickandmortyapi.com/api/character"];
-
-    const dataPromises = urls.map((url) => fetchData(url));
-
-    const dataArray = await Promise.all(dataPromises);
-
-    const combinedResults = selectedEpisode
-      ? dataArray.flatMap((item) => item.image)
-      : dataArray.flatMap((item) => item.results);
-    setCharactersData(combinedResults);
-
-    console.log(combinedResults, "charecters");
-
-    console.log(urls, "urls");
+    console.log({ ids })
+    const data = await fetchData(`https://rickandmortyapi.com/api/character/${ids || ''}`)
+    setCharactersData(data.results || data)
   }
 
   useEffect(() => {
@@ -47,16 +36,23 @@ const Characters = ({ selectedEpisode, allData }: any) => {
   return (
     <div>
       {charactersData.length > 0 && selectedEpisode && <h3>{charactersData.length} characters in episode &quot;{selectedEpisode}&quot;</h3>}
-      {charactersData.map((character: any, index: number) => (
-        <img
-          src={selectedEpisode ? character : character.image}
-          alt="character-img"
-          key={index}
-          width={150}
-          height={150}
-          style={{ margin: "10px", borderRadius: "20px" }}
-        ></img>
+      <div className="row">
+      {charactersData?.map((character: any, index: number) => (
+        <div className="col-md-2 d-flex flex-column align-items-center mb-2">
+          <img
+            src={character.image}
+            alt="character-img"
+            key={index}
+            width={150}
+            height={150}
+            style={{ margin: "10px", borderRadius: "20px" }}
+          ></img>
+          {
+            selectedEpisode && <span>{character.name}</span>
+          }
+        </div>
       ))}
+      </div>
     </div>
   );
 };
