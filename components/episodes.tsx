@@ -40,14 +40,15 @@ const Episode = ({
 
   return (
     <div>
-      <ul style={{ listStyleType: "none", padding: 0 }}>
+      <ul style={{ height: "700px", listStyleType: "none", padding: 0, overflowY: "scroll" }}>
         {allData.map((episode: any) => (
           <li
             key={episode.id}
             onClick={() => setSelectedEpisode(episode.name)}
-            className={
-              episode.name == selectedEpisode ? "selected episode" : "episode"
-            }
+            // className={
+            //   episode.name == selectedEpisode ? "selected episode" : "episode"
+            // }
+            className={`btn w-100 mb-2 ${selectedEpisode === episode.name ? "btn-primary" : "btn-outline-primary"}`}
           >
             {episode.name}
           </li>
