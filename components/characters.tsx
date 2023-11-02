@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 
-const getResultIdsString = (urls) => {
+const getResultIdsString = (urls: any) => {
   console.log({ urls })
-  return urls?.map(url => url.split('/').pop()).join(',');
+  return urls?.map((url: string) => url.split('/').pop()).join(',');
 }
 
 const Characters = ({ selectedEpisode, selectedEpisodeChars, allData }: any) => {
@@ -38,7 +38,7 @@ const Characters = ({ selectedEpisode, selectedEpisodeChars, allData }: any) => 
       {charactersData.length > 0 && selectedEpisode && <h3>{charactersData.length} characters in episode &quot;{selectedEpisode}&quot;</h3>}
       <div className="row">
       {charactersData?.map((character: any, index: number) => (
-        <div className="col-md-2 d-flex flex-column align-items-center mb-2">
+        <div key={character.id} className="col-md-2 d-flex flex-column align-items-center mb-2">
           <img
             src={character.image}
             alt="character-img"
